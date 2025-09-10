@@ -43,19 +43,23 @@ With a familiar, WhatsApp-inspired interface, WhatsChat focuses on **simplicity,
 
 ## 📸 Screenshots
 
-![Login Screen](<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/783fcb95-a678-4060-8bd4-9dd0f0c99278" />
-)  
+#### Login Screen 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/783fcb95-a678-4060-8bd4-9dd0f0c99278" />
+  
 *Login with Firebase Authentication*  
 
-![Home Page with Inbox](<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/94be9fb7-83e2-4cb5-9a0c-9d7ad605df95" />
-)  
+#### Home Page with Inbox 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/94be9fb7-83e2-4cb5-9a0c-9d7ad605df95" />
+
 *Home page showing inbox with recent chats* 
 
-![Chat Screen] <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d933e8b7-3b9f-44f4-a083-bde04a2a7e31" />
+#### Chat Screen 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d933e8b7-3b9f-44f4-a083-bde04a2a7e31" />
 
 *One-to-one real-time messaging*  
 
-![Friend Search](<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6e6ae586-385a-41a9-a018-58a7eacd6080" />
-)  
+#### Friend Search 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6e6ae586-385a-41a9-a018-58a7eacd6080" />
+
 *Search friends by their registered email ID*  
 
