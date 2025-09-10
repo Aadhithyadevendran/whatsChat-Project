@@ -51,8 +51,8 @@ With a familiar, WhatsApp-inspired interface, WhatsChat focuses on **simplicity,
 )  
 *Home page showing inbox with recent chats* 
 
-![Chat Screen](<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d933e8b7-3b9f-44f4-a083-bde04a2a7e31" />
-)  
+![Chat Screen] <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d933e8b7-3b9f-44f4-a083-bde04a2a7e31" />
+
 *One-to-one real-time messaging*  
 
 ![Friend Search](<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6e6ae586-385a-41a9-a018-58a7eacd6080" />
