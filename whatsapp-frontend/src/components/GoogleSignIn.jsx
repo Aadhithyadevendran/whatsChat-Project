@@ -3,6 +3,7 @@ import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function GoogleSignIn() {
   const navigate = useNavigate();
@@ -22,14 +23,14 @@ export default function GoogleSignIn() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await axios.post("http://localhost:8000/api/user/upsert", {
+      await axios.post(`${BASE_URL}/api/user/upsert`, {
         firebaseUid: user.uid,
         name: user.displayName,
         email: user.email,
       });
 
       const res = await axios.get(
-        `http://localhost:8000/api/user/search?email=${user.email}`
+        `${BASE_URL}/api/user/search?email=${user.email}`
       );
 
       if (res.data && res.data.password) {
@@ -52,11 +53,11 @@ export default function GoogleSignIn() {
     }
     setLoading(true);
     try {
-      await axios.post("http://localhost:8000/api/auth/set-password", {
+      await axios.post(`${BASE_URL}/api/auth/set-password`, {
         email: googleUser.email,
         password,
       });
-      setPassword(""); // Clear password field
+      setPassword("");
       setShowPasswordPrompt(false);
       navigate("/home");
     } catch (err) {
@@ -74,14 +75,17 @@ export default function GoogleSignIn() {
     setLoading(true);
     setLoginError("");
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", {
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, {
         email: loginEmail,
         password: loginPassword,
       });
       if (res.data.success) {
+        const userRes = await axios.get(
+          `${BASE_URL}/api/user/search?email=${loginEmail}`
+        );
+        console.log(userRes.data);
+        localStorage.setItem("user", JSON.stringify(userRes.data));
         navigate("/home");
-      } else {
-        setLoginError("Invalid email or password");
       }
     } catch (err) {
       setLoginError("Login failed: Invalid Password or Email");
@@ -89,18 +93,22 @@ export default function GoogleSignIn() {
       setLoading(false);
     }
   };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 p-6">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 p-4 sm:p-6">
+      <div
+        className="bg-white shadow-lg rounded-lg p-4 sm:p-6 
+                  w-[90%] max-w-xs   // mobile width reduced
+                  sm:w-full sm:max-w-md lg:max-w-lg 
+                  break-words"
+      >
+        <h1 className="text-2xl sm:text-2xl md:text-3xl font-bold text-center mb-6 text-gray-800 leading-tight">
           Welcome to Whats-Chat
         </h1>
-
-        {/* Email Login Section */}
         {!googleUser && !showPasswordPrompt && (
           <>
-            <h2 className="text-xl font-semibold mb-4 text-center text-gray-700">
-              Login with Email & Password
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-center text-gray-700 leading-snug">
+              Login with Email
             </h2>
 
             <input
@@ -108,53 +116,47 @@ export default function GoogleSignIn() {
               placeholder="Email"
               value={loginEmail}
               onChange={(e) => setLoginEmail(e.target.value)}
-              className="border border-gray-300 rounded px-4 py-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="border border-gray-300 rounded px-3 py-2 sm:px-4 sm:py-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
             />
             <input
               type="password"
               placeholder="Password"
               value={loginPassword}
               onChange={(e) => setLoginPassword(e.target.value)}
-              className="border border-gray-300 rounded px-4 py-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="border border-gray-300 rounded px-3 py-2 sm:px-4 sm:py-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
             />
             {loginError && (
-              <p className="text-red-600 mb-4 text-center font-medium">
+              <p className="text-red-600 mb-4 text-center font-medium text-sm sm:text-base">
                 {loginError}
               </p>
             )}
             <button
               onClick={handleLogin}
               disabled={loading}
-              className="bg-green-600 text-white font-semibold px-6 py-3 rounded w-full mb-6
-             hover:bg-green-700 hover:scale-105 cursor-pointer
-             disabled:opacity-50 transition duration-300 ease-in-out"
+              className="bg-green-600 text-white font-semibold px-5 py-2 sm:px-6 sm:py-3 rounded w-full mb-6 hover:bg-green-700 hover:scale-105 cursor-pointer disabled:opacity-50 transition duration-300 ease-in-out text-sm sm:text-base"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
-            <div className="text-center text-gray-500 font-semibold mb-6">
+            <div className="text-center text-gray-500 font-semibold mb-6 text-sm sm:text-base">
               - OR -
             </div>
 
-            {/* Google Sign-In button */}
             <button
               onClick={handleSignIn}
               disabled={loading}
-              className="bg-blue-600 text-white font-semibold px-6 py-3 rounded w-full
-             hover:bg-blue-700 hover:scale-105 cursor-pointer
-             disabled:opacity-50 transition duration-300 ease-in-out"
+              className="bg-blue-600 text-white font-semibold px-5 py-2 sm:px-6 sm:py-3 rounded w-full hover:bg-blue-700 hover:scale-105 cursor-pointer disabled:opacity-50 transition duration-300 ease-in-out text-sm sm:text-base"
             >
               {loading ? "Signing in..." : "Sign in with Google"}
             </button>
           </>
         )}
 
-        {/* Password set prompt */}
         {showPasswordPrompt && googleUser && (
           <div>
-            <h2 className="text-xl font-semibold mb-4 text-center text-gray-700">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-center text-gray-700 leading-snug">
               Set a password
             </h2>
-            <p className="mb-4 text-center text-gray-600">
+            <p className="mb-4 text-center text-gray-600 text-sm sm:text-base">
               For future logins, set a password for your account (
               <span className="font-medium">{googleUser.email}</span>)
             </p>
@@ -163,14 +165,12 @@ export default function GoogleSignIn() {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="border border-gray-300 rounded px-4 py-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="border border-gray-300 rounded px-3 py-2 sm:px-4 sm:py-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
             />
             <button
               onClick={handleSetPassword}
               disabled={loading}
-              className="bg-blue-600 text-white font-semibold px-6 py-3 rounded w-full
-             hover:bg-blue-700 hover:scale-105 cursor-pointer
-             disabled:opacity-50 transition duration-300 ease-in-out"
+              className="bg-blue-600 text-white font-semibold px-5 py-2 sm:px-6 sm:py-3 rounded w-full hover:bg-blue-700 hover:scale-105 cursor-pointer disabled:opacity-50 transition duration-300 ease-in-out text-sm sm:text-base"
             >
               {loading ? "Saving..." : "Save Password"}
             </button>

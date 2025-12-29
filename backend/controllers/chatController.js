@@ -51,7 +51,7 @@ exports.getMessages = async (req, res) => {
   }
 };exports.getInbox = async (req, res) => {
   const { email } = req.query;
-
+  
   try {
     const chats = await Chat.find({ participants: email });
 

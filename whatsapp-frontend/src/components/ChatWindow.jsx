@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function ChatWindow() {
   const location = useLocation();
   const navigate = useNavigate();
-const targetEmail = location.state?.targetEmail;
-const targetName = location.state?.targetName || targetEmail;
+  const targetEmail = location.state?.targetEmail;
+  const targetName = location.state?.targetName || targetEmail;
 
   if (!targetEmail) {
     return (
@@ -25,20 +25,23 @@ const targetName = location.state?.targetName || targetEmail;
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-blue-100 p-4">
-      <div className="w-full max-w-4xl h-[80vh] bg-white rounded-xl shadow-lg flex flex-col">
-        <div className="flex items-center justify-between px-6 py-4 border-b bg-white rounded-t-xl">
-          <h2 className="text-lg font-semibold text-gray-800">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-blue-100 p-2 sm:p-4">
+      <div className="w-full max-w-4xl h-[90vh] sm:h-[80vh] bg-white rounded-xl shadow-lg flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b bg-white rounded-t-xl">
+          <h2 className="text-sm sm:text-lg font-semibold text-gray-800 truncate">
             💬 Chat with <span className="text-blue-600">{targetName}</span>
           </h2>
           <button
-            className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700"
+            className="px-3 sm:px-4 py-1 sm:py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 text-xs sm:text-sm"
             onClick={() => navigate("/home")}
           >
             🔙 Back
           </button>
         </div>
-        <div className="flex-1 overflow-auto p-4">
+
+        {/* Chat */}
+        <div className="flex-1 overflow-hidden">
           <DirectChat targetEmail={targetEmail} />
         </div>
       </div>
